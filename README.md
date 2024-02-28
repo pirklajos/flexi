@@ -5,11 +5,7 @@ Requitments:
 
 
 Installation:
-cd app
-git clone  site
-cd site
 composer install
-cd ..
 docker-compose up -d
 #docker exec -i app-mysql mysql -uapp -papppass rssreader < rssreaderapp.sql
 open in browser: 

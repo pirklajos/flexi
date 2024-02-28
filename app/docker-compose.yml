@@ -3,17 +3,17 @@ services:
   # PHP service
   app:
     build: ./docker/php/.
-    container_name: app-php
+    container_name: flexi-php
     working_dir: /var/www/site
     volumes:
       - ./site:/var/www/site
     networks:
-      - app-network
+      - flexi-network
 
   # Nginx service
   nginx:
     image: nginx:alpine
-    container_name: app-nginx
+    container_name: flexi-nginx
     working_dir: /var/www/site
     ports:
       - 8001:80
@@ -21,15 +21,15 @@ services:
       - ./site:/var/www/site
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
     networks:
-      - app-network
+      - flexi-network
 
   # Mysql service
   mysql:
     image: mysql:5.7.22
-    container_name: app-mysql
+    container_name: flexi-mysql
     restart: always
     environment:
-      - MYSQL_DATABASE=rssreader
+      - MYSQL_DATABASE=flexi
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=app
       - MYSQL_PASSWORD=apppass
@@ -38,8 +38,8 @@ services:
     ports:
       - 8982:3306
     networks:
-      - app-network
+      - flexi-network
 
 networks:
-  app-network:
+  flexi-network:
     driver: bridge
