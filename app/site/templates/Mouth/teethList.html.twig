@@ -1,0 +1,7 @@
+<table>
+    <tr>
+    {% for teeth in teethList %}
+        <td> {{ teeth.positionNumeric }} ({{ loop.index }})</td>
+    {% endfor %}
+    </tr>
+</table>
