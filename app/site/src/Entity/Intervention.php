@@ -68,4 +68,10 @@ class Intervention
         return $this;
     }
 
+    public function clearTooth(): static
+    {
+        $this->teeth = new ArrayCollection();
+        return $this;
+    }
+
 }

@@ -4,30 +4,70 @@
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 800px;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			padding: 2px 6px;
-		}
-	</style>
 
-	<div class="row" style="border: 1px solid red;">
-		<div class="col-3" style="border: 1px solid black;">
+	<div class="row gx-2" style="border: 1px solid red;">
+		<div class="col-auto">
 			<h5>Kezelések</h5>
-
 			{{ render(url( 'app_treatment' )) }}
 		</div>
-		<div class="col" style="border: 1px solid black;">
+		<div class="col-auto">
 			<h5>Fogkép</h5>
-
 			<div id="teethListDiv">{{ render(url( 'app_teethList' )) }}</div>
 		</div>
 	</div>
 
+<script>
+    $('#save_treatment').click(function(){
+        teethList = [];
+        $('.cb_teeth:checkbox:checked').each(function(){
+            teethList.push( $(this).attr('tdid') );
+        });
+
+        $.ajax({
+            url: "/save_intervetion",
+            method: "POST",
+            data: {treatment: $('#treatment_list').val(), teeth: teethList}
+        }).done(function() {
+            $.get("/list_inventions", function( data ) {
+                $('#list_inventions').html( data );
+            });
+            //@TODO: load the invention into list on the left side!!!
+        });
+    });
+
+	$(document).on('click', '.invention_btn', function () {
+		$('#treatment_list').val( $(this).attr('id') );
+        $.ajax({
+            url: "/listTeethByInventions",
+            method: "POST",
+            data: {treatment_id: $(this).attr('id')}
+        }).done(function(data) {
+            initTeeth();
+            $.each(data, function(index, item){
+                $('#teethListTable #cb_teeth_'+item.id).prop( "checked", true );
+                $('#teethListTable #'+item.id).addClass('selected_td');
+            });
+        });
+    });
+
+    function initTeeth(){
+        $('#teethListTable .cb_teeth').prop( "checked", false );
+        $('#teethListTable td').removeClass('selected_td');
+    }
+
+	$(document).on('click', '.delete-invention', function () {
+		console.log();
+		$.ajax({
+            url: "/deleteInvention",
+            method: "POST",
+            data: {id: $(this).prev().attr('id')}
+        }).done(function(data) {
+            console.log( data );
+			$.get("/list_inventions", function( data ) {
+                $('#list_inventions').html( data );
+            });
+        });
+	});
+</script>
 
 {% endblock %}

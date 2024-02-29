@@ -48,9 +48,11 @@ class TreatmentController extends AbstractController
 
         $inv->setTreatment($treatmentRepo->findOneBy(['id'=> $request->get('treatment')]));
         $teeth = $request->get('teeth');
-        foreach ($request->get('teeth') as $tooth_id) {
-            $inv->addTooth($toothRepo->findOneBy(['id'=>$tooth_id]));
-        }
+        $inv->clearTooth();
+        if($request->get('teeth') != null)
+            foreach ($request->get('teeth') as $tooth_id) {
+                $inv->addTooth($toothRepo->findOneBy(['id'=>$tooth_id]));
+            }
 
         $entityManager->persist($inv);
         $entityManager->flush();
@@ -65,6 +67,19 @@ class TreatmentController extends AbstractController
     public function listInventionsByTreatment(Request $request, InterventionRepository $invRepo, TreatmentRepository $treatmentRepo): JsonResponse
     {
         $inv = $invRepo->findOneBy(['treatment' => $treatmentRepo->findOneBy(['id'=> $request->get('treatment_id')])]);
+        //dd( $request->get('treatment_id') );
         return $this->json( $inv->getTeeth() );
+    }
+
+    #[Route('/deleteInvention', name: 'app_delete_invention')]
+    public function deleteInvention(Request $request, InterventionRepository $invRepo, EntityManagerInterface $em): JsonResponse
+    {
+        $sql = "delete from intervention where treatment_id = ".$request->get('id');
+        
+
+        return $this->json([
+            'success' => $em->getConnection()->exec($sql),
+            'sql' => $sql,
+        ]);
     }
 }

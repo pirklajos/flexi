@@ -1,14 +1,14 @@
 <style>
-    td { padding: 10px !important ; border: 1px solid black !important; background-color: white; }
+    td { padding: 10px !important ; border: 1px solid black; background-color: white; }
     td:hover { cursor: pointer; background-color: green; }
-    .selected_td { background-color: green;}
+    .selected_td { border: 3px solid blue !important;}
 </style>
 <table class="table-bordered" id="teethListTable">
     <tr>
     {% for teeth in teethList %}
         <td class="teeth_td" id="{{teeth.id}}"> 
             {{ teeth.positionNumeric }} 
-            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class=" cb_teeth" /></td>
+            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class="d-none cb_teeth" /></td>
         {% if loop.index == 16 %} </tr><tr> {% endif %}
     {% endfor %}
     </tr>
@@ -16,11 +16,11 @@
 
 <script>
     $('.teeth_td').click(function(){
-        if($('#cb_teeth_'+$(this).attr('id')).attr('checked')){
-            $('#cb_teeth_'+$(this).attr('id')).attr('checked', false);
+        if($('#cb_teeth_'+$(this).attr('id')).prop('checked')){
+            $('#cb_teeth_'+$(this).attr('id')).prop( "checked", false );
             $(this).removeClass('selected_td');
         }else{
-            $('#cb_teeth_'+$(this).attr('id')).attr('checked', true);
+            $('#cb_teeth_'+$(this).attr('id')).prop( "checked", true );
             $(this).addClass('selected_td');
         }
     });
