@@ -8,7 +8,7 @@
     {% for teeth in teethList %}
         <td class="teeth_td" id="{{teeth.id}}"> 
             {{ teeth.positionNumeric }} 
-            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class="d-none" /></td>
+            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class="d-none cb_teeth" /></td>
         {% if loop.index == 16 %} </tr><tr> {% endif %}
     {% endfor %}
     </tr>

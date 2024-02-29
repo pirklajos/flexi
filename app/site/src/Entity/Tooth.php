@@ -47,4 +47,5 @@ class Tooth
 
         return $this;
     }
+
 }
