@@ -11,9 +11,13 @@
 <div class="row" style="border: 1px solid red;">
     <div class="col-3" style="border: 1px solid black;">
         <h5>Kezelések</h5>
+
+        {{ render(url( 'app_treatment' )) }}
     </div>
     <div class="col" style="border: 1px solid black;">
         <h5>Fogkép</h5>
+        
+        {{ render(url( 'app_teethList' )) }}
     </div>
 </div>
 

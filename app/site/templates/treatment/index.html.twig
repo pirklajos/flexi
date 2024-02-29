@@ -1,0 +1,17 @@
+<div class="row">
+	<div class="col">
+		<select class="form-select form-select-sm" aria-label=".form-select-lg">
+			<option selected>Válasszon kezelést</option>
+			{% for treatment in treatments %}
+                <option value="{{ treatment.id }}">{{ treatment.name }}</option>
+            {% endfor %}
+		</select>
+	</div>
+	<div class="col">
+		<button type="button" class="btn btn-success btn-sm">Rögzítés</button>
+	</div>
+</div>
+
+<div>
+    
+</div>
