@@ -16,31 +16,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TreatmentController extends AbstractController
 {
     #[Route('/treatment', name: 'app_treatment')]
-    public function index(TreatmentRepository $treatmentRepo, InterventionRepository $invRepo): Response
+    public function index(TreatmentRepository $treatmentRepo): Response
     {
-
         $treatments = $treatmentRepo->findAll();
-        $inv = $invRepo->findAll();
-
-        //dd( $inv[0]->getTeeth() );
 
         return $this->render('treatment/index.html.twig', [
-            'treatments' => $treatments,
+            'treatments' => $treatments
+        ]);
+    }
+
+    #[Route('/list_inventions', name: 'app_list_inventions')]
+    public function listInventions(InterventionRepository $invRepo): Response
+    {
+        $inv = $invRepo->findAll();
+
+        return $this->render('treatment/inventions.html.twig', [
             'inventions' => $inv
         ]);
     }
 
     #[Route('/save_intervetion', name: 'app_save_intervetion')]
-    public function saveIntervention(EntityManagerInterface $entityManager, Request $request, TreatmentRepository $treatmentRepo, ToothRepository $toothRepo): JsonResponse
+    public function saveIntervention(EntityManagerInterface $entityManager, Request $request, TreatmentRepository $treatmentRepo, 
+        ToothRepository $toothRepo, InterventionRepository $interventionRepo): JsonResponse
     {
 
-        $inv = new Intervention();
+        $inv = $interventionRepo->findOneBy(['treatment'=> $treatmentRepo->findOneBy(['id'=> $request->get('treatment')])]);
+        
+        if( $inv == null) {
+            $inv = new Intervention();
+        }
+
         $inv->setTreatment($treatmentRepo->findOneBy(['id'=> $request->get('treatment')]));
         $teeth = $request->get('teeth');
         foreach ($request->get('teeth') as $tooth_id) {
             $inv->addTooth($toothRepo->findOneBy(['id'=>$tooth_id]));
         }
-        
+
         $entityManager->persist($inv);
         $entityManager->flush();
 
@@ -48,5 +59,12 @@ class TreatmentController extends AbstractController
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/SandBoxController.php',
         ]);
+    }
+
+    #[Route('/listTeethByInventions', name: 'app_list_inventions_by_treatment')]
+    public function listInventionsByTreatment(Request $request, InterventionRepository $invRepo, TreatmentRepository $treatmentRepo): JsonResponse
+    {
+        $inv = $invRepo->findOneBy(['treatment' => $treatmentRepo->findOneBy(['id'=> $request->get('treatment_id')])]);
+        return $this->json( $inv->getTeeth() );
     }
 }

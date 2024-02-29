@@ -1,0 +1,8 @@
+<div class="list-group">
+    {% for invention in inventions %}
+        <button type="button" class="list-group-item list-group-item-action invention_btn" id="{{ invention.id }}">
+        {{ invention.treatment.name }}
+            [{% for tooth in invention.teeth %}{{ tooth.positionNumeric }}{% if loop.last %}{% else %},{% endif %}{% endfor %}]
+        </button>
+    {% endfor %}
+</div>

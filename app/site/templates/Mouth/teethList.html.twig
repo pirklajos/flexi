@@ -3,12 +3,12 @@
     td:hover { cursor: pointer; background-color: green; }
     .selected_td { background-color: green;}
 </style>
-<table class="table-bordered">
+<table class="table-bordered" id="teethListTable">
     <tr>
     {% for teeth in teethList %}
         <td class="teeth_td" id="{{teeth.id}}"> 
             {{ teeth.positionNumeric }} 
-            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class="d-none cb_teeth" /></td>
+            <input type="checkbox" id="cb_teeth_{{teeth.id}}" tdid="{{teeth.id}}" class=" cb_teeth" /></td>
         {% if loop.index == 16 %} </tr><tr> {% endif %}
     {% endfor %}
     </tr>
