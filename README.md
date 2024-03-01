@@ -6,14 +6,15 @@ Requitments:
 
 
 Installation:
-git clone https://github.com/pirklajos/flexi.git flexi_test
-cd felxi_test
-cd app
-docker-compose up -d
-cd site
-composer install
-npm install
-php bin/console doctrine:migration:migrate
-npm run watch
+- git clone https://github.com/pirklajos/flexi.git flexi_test
+- cd felxi_test
+- cd app
+- docker-compose up -d
+- cd site
+- composer install
+- npm install
+- php bin/console doctrine:migration:migrate
+- npm run watch
+
 open in browser: 
     localhost:8001
